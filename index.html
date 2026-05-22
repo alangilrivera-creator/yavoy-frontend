@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>YaVoy – Tu comida favorita</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="app-wrapper">
+  <div class="app" id="app">
+<!-- NAVBAR (topbar en desktop, bottom en móvil) -->
+    <nav class="navbar">
+      <button class="nav-btn active" id="nav-inicio" onclick="mostrar('inicio')"><i class="fas fa-home"></i><span>Inicio</span></button>
+      <button class="nav-btn" id="nav-favoritos" onclick="mostrar('favoritos')"><i class="fas fa-heart"></i><span>Favoritos</span></button>
+      <button class="nav-btn" id="nav-ofertas" onclick="mostrar('ofertas')"><i class="fas fa-tag"></i><span>Ofertas</span><span class="nav-badge" style="background:#ff6b35;display:flex;">!</span></button>
+      <button class="nav-btn" id="nav-carrito" onclick="mostrar('carrito')"><i class="fas fa-shopping-cart"></i><span>Carrito</span><span class="nav-badge" id="cartNavBadge" style="display:none"></span></button>
+      <button class="nav-btn" id="nav-cuenta" onclick="mostrar('cuenta')"><i class="fas fa-user"></i><span>Cuenta</span></button>
+    </nav>
+
+
+    <!-- PANTALLA LOGIN -->
+    <div class="screen active" id="screen-login">
+      <!-- Panel izquierdo visible solo en desktop -->
+      <div class="login-left-panel">
+        <div class="login-panel-logo">🛵</div>
+        <h1>Ya<span>Voy</span></h1>
+        <p>Tu comida favorita, entregada al instante donde estés</p>
+      </div>
+      <!-- Panel derecho: formulario -->
+      <div class="login-right-panel">
+      <div class="login-container">
+        <div class="login-logo-wrap">
+          <div class="login-logo-icon">🛵</div>
+          <h1 class="login-brand">Ya<span>Voy</span></h1>
+          <p class="login-tagline">Tu comida favorita, al instante</p>
+        </div>
+        <div class="auth-tabs">
+          <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Iniciar Sesión</button>
+          <button class="auth-tab" id="tabRegister" onclick="switchTab('register')">Crear Cuenta</button>
+        </div>
+        <div id="loginForm" class="auth-form">
+          <div class="form-group">
+            <label><i class="fas fa-envelope"></i> Correo electrónico</label>
+            <input type="email" id="loginEmail" placeholder="tu@email.com" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> Contraseña</label>
+            <div class="input-password-wrap">
+              <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+              <button class="toggle-pw" type="button" onclick="togglePw('loginPassword',this)"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+          <div class="form-row-end">
+            <button class="forgot-btn" type="button" onclick="mostrarToast('📧 Te enviaremos un correo de restablecimiento')">¿Olvidaste tu contraseña?</button>
+          </div>
+          <button class="submit-btn login-btn" type="button" onclick="IniciarSesion()"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
+          <div class="auth-divider"><span>o continúa con</span></div>
+          <div class="social-btns">
+            <button class="social-btn google" type="button" onclick="loginSocial('Google')"><i class="fab fa-google"></i> Google</button>
+            <button class="social-btn facebook" type="button" onclick="loginSocial('Facebook')"><i class="fab fa-facebook-f"></i> Facebook</button>
+          </div>
+        </div>
+        <div id="registerForm" class="auth-form" style="display:none">
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> Nombre completo</label>
+            <input type="text" id="regNombre" placeholder="Tu nombre completo">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-envelope"></i> Correo electrónico</label>
+            <input type="email" id="regEmail" placeholder="tu@email.com">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-phone"></i> Teléfono</label>
+            <input type="tel" id="regTel" placeholder="7000-0000">
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> Contraseña</label>
+            <div class="input-password-wrap">
+              <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres">
+              <button class="toggle-pw" type="button" onclick="togglePw('regPassword',this)"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> Confirmar contraseña</label>
+            <div class="input-password-wrap">
+              <input type="password" id="regPassword2" placeholder="Repite tu contraseña">
+              <button class="toggle-pw" type="button" onclick="togglePw('regPassword2',this)"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+          <div class="form-group terminos-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="regTerminos">
+              <span>Acepto los <a href="#" onclick="return false">Términos y Condiciones</a> y la <a href="#" onclick="return false">Política de Privacidad</a></span>
+            </label>
+          </div>
+          <button class="submit-btn login-btn" type="button" onclick="registrarUsuario()"><i class="fas fa-user-plus"></i> Crear Cuenta</button>
+        </div>
+        <p class="login-footer">Al continuar, aceptas nuestros <a href="#">Términos de Servicio</a></p>
+      </div>
+      </div><!-- /login-right-panel -->
+    </div>
+
+    <!-- PANTALLA INICIO -->
+    <div class="screen" id="screen-inicio">
+      <header class="header">
+        <div class="header-top">
+          <img src="img/logo.png" alt="YaVoy" class="logo" onerror="this.outerHTML='<span class=\'logo-text\'>Ya<span>Voy</span></span>'">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button class="notif-btn" id="notifBtn" onclick="abrirNotificaciones()">
+              <i class="fas fa-bell"></i>
+              <span class="badge" id="notifBadge">2</span>
+            </button>
+          </div>
+        </div>
+        <div class="location-bar" onclick="cambiarUbicacion()">
+          <i class="fas fa-map-marker-alt"></i>
+          <span id="ubicacionTexto">Calle Falsa 123, El Salvador</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+      </header>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Buscar restaurantes o platos..." autocomplete="off">
+        <button class="filter-btn" onclick="mostrarToast('Filtros próximamente')"><i class="fas fa-sliders-h"></i></button>
+      </div>
+      <div class="search-suggestions" id="searchSuggestions"></div>
+      <div class="hero-slider">
+        <div class="hero-slide active" style="background:linear-gradient(135deg,#5f0fff 0%,#c840ff 50%,#ff9f00 100%)">
+          <div class="hero-content">
+            <h2>¡Tu comida favorita,<br>YaVoy! 🛵🍕</h2>
+            <p>Entrega en 20–30 min</p>
+            <button class="hero-btn" onclick="abrirModalPedido()">Pide Ahora</button>
+          </div>
+          <img src="img/hero.jpg" alt="" class="hero-img" onerror="this.style.display='none'">
+        </div>
+        <div class="hero-slide" style="background:linear-gradient(135deg,#ff6b35 0%,#f7c59f 100%)">
+          <div class="hero-content">
+            <h2>🔥 Ofertas del día<br>¡Hasta 30% OFF!</h2>
+            <p>Solo por hoy en restaurantes seleccionados</p>
+            <button class="hero-btn" onclick="mostrar('ofertas')">Ver Ofertas</button>
+          </div>
+        </div>
+        <div class="hero-dots" id="heroDots">
+          <span class="dot active" onclick="irSlide(0)"></span>
+          <span class="dot" onclick="irSlide(1)"></span>
+        </div>
+      </div>
+      <section class="categories-section">
+        <div class="categories" id="categories">
+          <button class="cat-btn active" data-tipo="todos" onclick="filtrar('todos')"><span class="cat-icon">🍽️</span><span>Todos</span></button>
+          <button class="cat-btn" data-tipo="pizza" onclick="filtrar('pizza')"><span class="cat-icon">🍕</span><span>Pizza</span></button>
+          <button class="cat-btn" data-tipo="burger" onclick="filtrar('burger')"><span class="cat-icon">🍔</span><span>Burgers</span></button>
+          <button class="cat-btn" data-tipo="tacos" onclick="filtrar('tacos')"><span class="cat-icon">🌮</span><span>Tacos</span></button>
+          <button class="cat-btn" data-tipo="china" onclick="filtrar('china')"><span class="cat-icon">🥡</span><span>China</span></button>
+          <button class="cat-btn" data-tipo="pollo" onclick="filtrar('pollo')"><span class="cat-icon">🍗</span><span>Pollo</span></button>
+          <button class="cat-btn" data-tipo="postre" onclick="filtrar('postre')"><span class="cat-icon">🧁</span><span>Postres</span></button>
+          <button class="cat-btn" data-tipo="mariscos" onclick="filtrar('mariscos')"><span class="cat-icon">🦐</span><span>Mariscos</span></button>
+          <button class="cat-btn" data-tipo="italiana" onclick="filtrar('italiana')"><span class="cat-icon">🍝</span><span>Italiana</span></button>
+        </div>
+      </section>
+      <section class="restaurants-section">
+        <div class="section-header">
+          <h3>Restaurantes Cerca de Ti</h3>
+          <button onclick="filtrar('todos')" class="ver-todos-btn">Ver todos</button>
+        </div>
+        <div class="restaurants-grid" id="restaurantList"></div>
+      </section>
+    </div>
+
+    <!-- PANTALLA FAVORITOS -->
+    <div class="screen" id="screen-favoritos">
+      <div class="screen-header"><h2>❤️ Favoritos</h2></div>
+      <div id="favoritosContainer" class="restaurants-grid" style="padding:10px 15px;"></div>
+    </div>
+
+    <!-- PANTALLA OFERTAS -->
+    <div class="screen" id="screen-ofertas">
+      <div class="screen-header ofertas-header">
+        <h2>🔥 Ofertas del Día</h2>
+        <p style="color:rgba(255,255,255,0.8);font-size:12px;margin-top:2px;">Descuentos exclusivos por tiempo limitado</p>
+      </div>
+      <div id="ofertasContainer"></div>
+    </div>
+
+    <!-- PANTALLA CARRITO -->
+    <div class="screen" id="screen-carrito">
+      <div class="screen-header"><h2>🛒 Mi Carrito</h2></div>
+      <div id="carritoContainer"></div>
+    </div>
+
+    <!-- PANTALLA PEDIDOS -->
+    <div class="screen" id="screen-pedidos">
+      <div class="screen-header"><h2>Mis Pedidos</h2></div>
+      <div id="pedidosContainer"></div>
+    </div>
+
+    <!-- PANTALLA CUENTA -->
+    <div class="screen" id="screen-cuenta">
+      <div class="profile-header">
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar" id="profileAvatar"><i class="fas fa-user"></i></div>
+          <button class="avatar-edit" onclick="cambiarFoto()"><i class="fas fa-camera"></i></button>
+          <input type="file" id="fotoInput" accept="image/*" style="display:none" onchange="procesarFoto(event)">
+        </div>
+        <h2 id="profileName">Usuario YaVoy</h2>
+        <p id="profileEmail">usuario@email.com</p>
+      </div>
+      <div class="profile-menu">
+        <button class="profile-item" onclick="editarPerfil()"><i class="fas fa-user-edit"></i><span>Editar Perfil</span><i class="fas fa-chevron-right"></i></button>
+        <button class="profile-item" onclick="abrirDirecciones()"><i class="fas fa-map-marked-alt"></i><span>Mis Direcciones</span><i class="fas fa-chevron-right"></i></button>
+        <button class="profile-item" onclick="mostrar('pedidos')"><i class="fas fa-shopping-bag"></i><span>Historial de Pedidos</span><i class="fas fa-chevron-right"></i></button>
+        <button class="profile-item" onclick="abrirMetodosPago()"><i class="fas fa-credit-card"></i><span>Métodos de Pago</span><i class="fas fa-chevron-right"></i></button>
+        <button class="profile-item" onclick="abrirAyuda()"><i class="fas fa-headset"></i><span>Ayuda &amp; Soporte</span><i class="fas fa-chevron-right"></i></button>
+        <button class="profile-item danger" onclick="cerrarSesion()"><i class="fas fa-sign-out-alt"></i><span>Cerrar Sesión</span><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<!-- MODAL NOTIFICACIONES -->
+<div class="modal-overlay" id="modalNotificaciones">
+  <div class="modal modal-pedido">
+    <button class="modal-close" onclick="cerrarModal('modalNotificaciones')"><i class="fas fa-times"></i></button>
+    <h2 class="modal-title">🔔 Notificaciones</h2>
+    <div id="notifList"></div>
+    <div style="margin-top:12px;text-align:center;">
+      <button onclick="marcarTodasLeidas()" style="background:var(--purple);color:#fff;border:none;padding:10px 20px;border-radius:10px;font-family:Nunito,sans-serif;font-weight:700;cursor:pointer;font-size:13px;">✓ Marcar todas como leídas</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL RESTAURANTE -->
+<div class="modal-overlay" id="modalRestaurante">
+  <div class="modal">
+    <button class="modal-close" onclick="cerrarModal('modalRestaurante')"><i class="fas fa-times"></i></button>
+    <div class="modal-hero" id="modalRestHero"></div>
+    <div class="modal-body">
+      <h2 id="modalRestNombre"></h2>
+      <div class="modal-meta" id="modalRestMeta"></div>
+      <div class="menu-section">
+        <h3>Menú Popular</h3>
+        <div id="modalMenu" class="menu-grid"></div>
+      </div>
+      <button class="mapa-btn-unico" id="mapaRestBtn"><i class="fas fa-map-marker-alt"></i> Ver Ubicación en el Mapa</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PEDIDO -->
+<div class="modal-overlay" id="modalPedido">
+  <div class="modal modal-pedido">
+    <button class="modal-close" onclick="cerrarModal('modalPedido')"><i class="fas fa-times"></i></button>
+    <h2 class="modal-title">🛵 Realizar Pedido</h2>
+    <div class="form-group"><label>Tu nombre</label><input type="text" id="pedidoNombre" placeholder="Ej: Juan Pérez"></div>
+    <div class="form-group"><label>Teléfono</label><input type="tel" id="pedidoTel" placeholder="Ej: 7000-0000"></div>
+    <div class="form-group"><label>Dirección de entrega</label><input type="text" id="pedidoDireccion" placeholder="Calle, número, colonia"></div>
+    <div class="form-group"><label>¿Qué deseas ordenar?</label><textarea id="pedidoDetalle" placeholder="Describe tu pedido..."></textarea></div>
+    <div class="form-group"><label>Método de pago</label>
+      <div class="pago-btns">
+        <button class="pago-btn active" data-pago="efectivo" onclick="selectPago(this)">💵 Efectivo</button>
+        <button class="pago-btn" data-pago="tarjeta" onclick="selectPago(this)">💳 Tarjeta</button>
+      </div>
+    </div>
+    <button class="submit-btn" onclick="confirmarPedido()"><i class="fas fa-check-circle"></i> Confirmar Pedido</button>
+  </div>
+</div>
+
+<!-- MODAL EDITAR PERFIL -->
+<div class="modal-overlay" id="modalPerfil">
+  <div class="modal modal-pedido">
+    <button class="modal-close" onclick="cerrarModal('modalPerfil')"><i class="fas fa-times"></i></button>
+    <h2 class="modal-title">✏️ Editar Perfil</h2>
+    <div class="form-group"><label>Nombre completo</label><input type="text" id="editNombre" placeholder="Tu nombre"></div>
+    <div class="form-group"><label>Correo electrónico</label><input type="email" id="editEmail" placeholder="tu@email.com"></div>
+    <div class="form-group"><label>Teléfono</label><input type="tel" id="editTel" placeholder="7000-0000"></div>
+    <button class="submit-btn" onclick="guardarPerfil()"><i class="fas fa-save"></i> Guardar Cambios</button>
+  </div>
+</div>
+
+<!-- MODAL DIRECCIONES -->
+<div class="modal-overlay" id="modalDirecciones">
+  <div class="modal modal-pedido">
+    <button class="modal-close" onclick="cerrarModal('modalDirecciones')"><i class="fas fa-times"></i></button>
+    <h2 class="modal-title">📍 Mis Direcciones</h2>
+    <div id="listaDirecciones"></div>
+    <div class="form-group" style="margin-top:12px;"><label>Agregar nueva dirección</label><input type="text" id="nuevaDireccionInput" placeholder="Ej: Col. Escalón, Calle Los Naranjos #12"></div>
+    <button class="submit-btn" onclick="agregarDireccion()"><i class="fas fa-plus-circle"></i> Agregar Dirección</button>
+  </div>
+</div>
+
+<!-- MODAL PAGOS -->
+<div class="modal-overlay" id="modalPago">
+  <div class="modal modal-pedido">
+    <button class="modal-close" onclick="cerrarModal('modalPago')"><i class="fas fa-times"></i></button>
+    <h2 class="modal-title">💳 Métodos de Pago</h2>
+    <p style="font-size:13px;color:#888;margin-bottom:14px;">Selecciona tu método de pago preferido</p>
+    <div class="pago-metodo-list">
+      <div class="pago-metodo-item" id="pagoEfectivoItem" onclick="seleccionarMetodoPagoGlobal('efectivo')">
+        <div class="pago-metodo-icon efectivo">💵</div>
+        <div class="pago-metodo-info"><h4>Efectivo</h4><p>Paga al recibir tu pedido</p></div>
+        <i class="fas fa-check-circle pago-check" id="checkEfectivo"></i>
+      </div>
+      <div class="pago-metodo-item" id="pagoTarjetaItem" onclick="seleccionarMetodoPagoGlobal('tarjeta')">
+        <div class="pago-metodo-icon tarjeta">💳</div>
+        <div class="pago-metodo-info"><h4>Tarjeta de Crédito/Débito</h4><p>Visa, Mastercard, American Express</p></div>
+        <i class="fas fa-check-circle pago-check" id="checkTarjeta"></i>
+      </div>
+    </div>
+    <div id="tarjetaFormSection" style="display:none;margin-top:12px;">
+      <div class="form-group"><label>Número de tarjeta</label><input type="text" id="cardNumber" placeholder="**** **** **** ****" maxlength="19" oninput="formatCardNumber(this)"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="form-group"><label>Vencimiento</label><input type="text" id="cardExpiry" placeholder="MM/AA" maxlength="5" oninput="formatExpiry(this)"></div>
+        <div class="form-group"><label>CVV</label><input type="text" id="cardCvv" placeholder="***" maxlength="3"></div>
+      </div>
+      <div class="form-group"><label>Nombre en la tarjeta</label><input type="text" id="cardName" placeholder="Como aparece en la tarjeta"></div>
+    </div>
+    <button class="submit-btn" onclick="guardarMetodoPago()"><i class="fas fa-save"></i> Guardar Método de Pago</button>
+  </div>
+</div>
+
+<!-- MODAL MAPA -->
+<div class="modal-overlay" id="modalMapa">
+  <div class="modal">
+    <button class="modal-close" onclick="cerrarModal('modalMapa')"><i class="fas fa-times"></i></button>
+    <h2 class="modal-title" style="padding:15px">📍 Ubicación del Restaurante</h2>
+    <div id="mapaContainer" style="width:100%;height:300px;background:#eee;overflow:hidden;">
+      <iframe id="mapaFrame" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+    </div>
+    <div style="padding:15px"><p id="mapaDireccion" style="color:#555;font-size:14px"></p></div>
+  </div>
+</div>
+
+<!-- MODAL AYUDA -->
+<div class="modal-overlay" id="modalAyuda">
+  <div class="modal">
+    <button class="modal-close" onclick="cerrarModal('modalAyuda')"><i class="fas fa-times"></i></button>
+    <div class="modal-body ayuda-body">
+      <h2 class="modal-title">🎧 Ayuda &amp; Soporte</h2>
+      <div class="ayuda-seccion">
+        <h4 class="ayuda-seccion-titulo"><i class="fas fa-user-circle"></i> Cuenta</h4>
+        <div class="ayuda-item" onclick="toggleAyuda(this)">
+          <div class="ayuda-item-header"><span>¿Cómo creo una cuenta en YaVoy?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="ayuda-item-body">Abre la app y toca <strong>"Crear Cuenta"</strong> en la pantalla de inicio. Ingresa tu nombre completo, correo electrónico, número de teléfono y una contraseña segura. Acepta los Términos y Condiciones y presiona <strong>"Crear Cuenta"</strong>. ¡Listo, ya eres parte de YaVoy!</div>
+        </div>
+        <div class="ayuda-item" onclick="toggleAyuda(this)">
+          <div class="ayuda-item-header"><span>¿Cómo cambio mi contraseña?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="ayuda-item-body">Ve a <strong>Cuenta → Editar Perfil</strong>. En la sección de contraseña, ingresa tu contraseña actual y luego la nueva. También puedes usar <strong>"¿Olvidaste tu contraseña?"</strong> en el inicio de sesión para recibir un enlace de restablecimiento en tu correo.</div>
+        </div>
+        <div class="ayuda-item" onclick="toggleAyuda(this)">
+          <div class="ayuda-item-header"><span>¿Cómo actualizo mis datos personales?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="ayuda-item-body">Ve a <strong>Cuenta → Editar Perfil</strong>. Allí podrás cambiar tu nombre, correo electrónico y número de teléfono. También puedes actualizar tu foto de perfil tocando el ícono de cámara. Recuerda guardar los cambios.</div>
+        </div>
+        <div class="ayuda-item" onclick="toggleAyuda(this)">
+          <div class="ayuda-item-header"><span>¿Puedo tener varias direcciones guardadas?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="ayuda-item-body">¡Sí! En <strong>Cuenta → Mis Direcciones</strong> puedes guardar múltiples direcciones de entrega (casa, trabajo, etc.). Al realizar un pedido, podrás seleccionar la que prefieras para esa entrega.</div>
+        </div>
+        <div class="ayuda-item" onclick="toggleAyuda(this)">
+          <div class="ayuda-item-header"><span>¿Cómo elimino mi cuenta?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="ayuda-item-body">Para eliminar tu cuenta, contacta a nuestro equipo de soporte a través de <strong>soporte@yavoy.sv</strong> o llámanos al <strong>2222-0000</strong>. Por tu seguridad, este proceso requiere verificación de identidad y puede tardar hasta 5 días hábiles.</div>
+        </div>
+        <div class="ayuda-item" onclick="toggleAyuda(this)">
+          <div class="ayuda-item-header"><span>¿Es segura mi información personal?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="ayuda-item-body">Tu privacidad es nuestra prioridad. Toda tu información está cifrada con tecnología SSL de 256 bits. Nunca compartimos tus datos con terceros sin tu consentimiento. Puedes consultar nuestra <strong>Política de Privacidad</strong> completa desde el menú de cuenta.</div>
+        </div>
+      </div>
+      <div class="ayuda-seccion">
+        <h4 class="ayuda-seccion-titulo"><i class="fas fa-shopping-bag"></i> Pedidos</h4>
+        <div class="ayuda-item" onclick="toggleAyuda(this)">
+          <div class="ayuda-item-header"><span>¿Cómo hago un pedido?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="ayuda-item-body">Selecciona un restaurante, elige los platos que deseas y agrégalos al carrito. Luego ve al carrito, revisa tu pedido y toca <strong>"Confirmar Pedido"</strong>. Llena tus datos de entrega y método de pago. ¡Tu pedido estará en camino!</div>
+        </div>
+        <div class="ayuda-item" onclick="toggleAyuda(this)">
+          <div class="ayuda-item-header"><span>¿Puedo cancelar un pedido?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="ayuda-item-body">Puedes cancelar un pedido dentro de los primeros <strong>5 minutos</strong> después de confirmarlo. Pasado ese tiempo, el restaurante ya habrá comenzado la preparación. Para cancelaciones tardías, contáctanos al <strong>2222-0000</strong>.</div>
+        </div>
+      </div>
+      <div class="ayuda-seccion">
+        <h4 class="ayuda-seccion-titulo"><i class="fas fa-credit-card"></i> Pagos</h4>
+        <div class="ayuda-item" onclick="toggleAyuda(this)">
+          <div class="ayuda-item-header"><span>¿Qué métodos de pago aceptan?</span><i class="fas fa-chevron-down"></i></div>
+          <div class="ayuda-item-body">Aceptamos <strong>efectivo</strong> al momento de la entrega y <strong>tarjetas de crédito/débito</strong> (Visa, Mastercard, American Express). Pronto habilitaremos pagos con billeteras digitales como PayPal y transferencias bancarias.</div>
+        </div>
+      </div>
+      <div class="ayuda-contacto">
+        <h4>¿Necesitas más ayuda?</h4>
+        <p>Nuestro equipo está disponible de <strong>7:00 AM a 10:00 PM</strong>, todos los días.</p>
+        <div class="ayuda-contacto-btns">
+          <button onclick="mostrarToast('📞 Llamando al 2222-0000...')"><i class="fas fa-phone"></i> 2222-0000</button>
+          <button onclick="mostrarToast('💬 Abriendo WhatsApp...')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+          <button onclick="mostrarToast('📧 soporte@yavoy.sv')"><i class="fas fa-envelope"></i> Email</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <p>Procesando...</p>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
