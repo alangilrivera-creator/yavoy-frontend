@@ -158,7 +158,7 @@ function IniciarSesion() {
             }, 1200);
         } else {
             ocultarLoading();
-            mostrarToast('⚠️ Usuario o contraseña incorrectos');
+            mostrarToast('⚠️ ' + (data.message || 'Usuario o contraseña incorrectos'));
         }
     })
     .catch(error => {
@@ -201,9 +201,9 @@ function registrarUsuario() {
                 mostrarToast(`¡Bienvenido, ${nombre}!`);
                 irAInicio();
             }, 1500);
-        } else {
+       } else {
             ocultarLoading();
-            mostrarToast('❌ El correo ya está registrado');
+            mostrarToast('❌ ' + (data.message || 'Error al registrar usuario'));
         }
     })
     .catch(error => {
