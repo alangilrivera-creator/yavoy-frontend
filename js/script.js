@@ -925,3 +925,4 @@ function cargarRestaurantes() {
   
 // Agrega esto al final de tu script.js si no está
 window.addEventListener('DOMContentLoaded', cargarRestaurantes);
+// v3
